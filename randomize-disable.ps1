@@ -1,20 +1,23 @@
 param(
     [Parameter(Mandatory = $true)]
-    [string]$DeviceName
+    [string]$DeviceName,
+    [int]$MaxNumberToTrigger = 5,
+    [int]$MinSeconds = 1,
+    [int]$MaxSeconds = 10
 )
 
 $scriptName = "disable-pnp-device.ps1";
-for ($i = 1; $i -le 5; $i++) {
-    $randomSleepSeconds = Get-Random -Minimum 1 -Maximum 10
+for ($i = 1; $i -le $MaxNumberToTrigger; $i++) {
+    $randomSleepSeconds = Get-Random -Minimum $MinSeconds -Maximum $MaxSeconds
 
-    Write-Output "Sleeping for $randomSleepSeconds seconds"
+    Write-Host -ForegroundColor Yellow "Sleeping for $randomSleepSeconds seconds"
 
     Start-Sleep -Seconds $randomSleepSeconds
 
-    Write-Output "Now executing $scriptName"
+    Write-Output "Now executing $scriptName..."
     & "./$scriptName" -DeviceName $DeviceName
 
-    Write-Output "Finish executing script!"
+    Write-Output "Finish executing $scriptName..."
 }
 
-Write-Output "FINISHED!"
+Write-Host -ForegroundColor Green "FINISHED!"
